@@ -1,19 +1,17 @@
 
 const dataURL = "http://localhost:3000/monsters/"
-const pageLimit = "?_limit=5"
+const pageLimit = "?_limit=50"
 const pageParam = "&_page="
 let pageNum = '1'
 
 
 
 function getData() {
-    console.log(document.querySelector('#monster-container'.innerHTML))
+    //console.log(document.querySelector('#monster-container'.innerHTML))
     fetch(`${dataURL}${pageLimit}${pageParam}${pageNum}`).then(res => res.json()).then(data => {
-        console.log(data)
         const monsterList = document.querySelector('#monster-container')
-        console.log(monsterList)
+        monsterList.innerHTML=""
         data.forEach((monster) => {
-            console.log(document.querySelector('#monster-container'.childNodes))
             monsterList.append(createMonster(monster))
         })
     })
@@ -37,14 +35,24 @@ function pageForward() {
     btnFwd.addEventListener('click', (e)=> {
         console.log(e)
         pageNum++
-        console.log(pageNum)
+        //console.log(pageNum)
+        getData()
+    })
+}
+
+function pageBack() {
+    const btnBack = document.querySelector('#back')
+    btnBack.addEventListener('click', (e)=> {
+        console.log(e)
+        pageNum--
+        //console.log(pageNum)
         getData()
     })
 }
 
 function newMonster() {
     const form = document.querySelector('#form')
-    console.log(form)
+    //console.log(form)
     form.addEventListener("submit", (e) => {
         e.preventDefault()
         const monsterObject = {
@@ -66,10 +74,11 @@ function newMonster() {
 
 function domLoaded() {
     document.addEventListener('DOMContentLoaded', (e)=> {
-        console.log('DOM Loaded')
+        //console.log('DOM Loaded')
         getData()
         newMonster()
         pageForward()
+        pageBack()
 
     })
 }
